@@ -1,0 +1,62 @@
+{% extends 'base.html' %}
+{% block update %}
+<div>
+    <h2 id="fm-header">Add your address</h2>
+    <!-- This is Form to enter the Address details of Customer -->
+    <div class="container">
+        <form method="POST">
+            {% csrf_token %}
+            {{ form.as_p }}
+            <input type="submit" value="Save Changes">
+        </form> 
+    </div>
+    <!-- Here is the data table of Customer address details -->
+    <div class="styled-table">
+        <h2 id="ad-table" >Recorded Address Details</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>Mobile</th>
+                    <th>Pincode</th>
+                    <th>State</th>
+                    <th>Address</th>
+                    <th>Locality</th>
+                    <th>Town</th>
+                    <th>Type of Address</th>
+                    <th>Edit</th>
+                    <th>Remove</th>
+                </tr>
+            </thead>
+            {% if details %}
+            <tbody>
+                {% for d in details %}
+                <tr>
+                    <td>{{d.name}}</td>
+                    <td>{{d.mobile}}</td>
+                    <td>{{d.pincode}}</td>
+                    <td>{{d.state}}</td>
+                    <td>{{d.address}}</td>
+                    <td>{{d.locality}}</td>
+                    <td>{{d.city}}</td>
+                    <td>{{d.type_of_address}}</td>
+                    <td>
+                        <a href="{% url 'update' d.pk %}"> <input type="submit" value="Edit"></a>
+                    </td>
+                    <td>
+                        <form method="POST" action="{% url 'delete' d.pk %}">
+                            {% csrf_token %}
+                            <input type="submit" value="Remove">
+                        </form>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+            {% else %}
+            <strong> No data found</strong>
+            {% endif %}
+        </table>
+        <a href="{% url 'candr' %}"><input type="submit" value="Add More"></a>
+    </div>
+</div>
+{% endblock %}
